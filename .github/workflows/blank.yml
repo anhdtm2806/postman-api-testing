@@ -1,0 +1,19 @@
+name: Automated API tests using Postman CLI
+
+on: push
+
+jobs:
+  automated-api-tests:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Postman CLI
+        run: |
+          curl -o- "https://dl-cli.pstmn.io/install/osx_arm64.sh" | sh
+      - name: Login to Postman CLI
+        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+      - name: Run API tests
+        run: |
+          postman collection run "33133723-a1dc2eb2-3646-4e92-8d32-9d11903cb5c2" -e "33133723-cede141e-6c82-42c3-8105-8c9177bc198f"
+      - name: logout
+        run: postman logout ${{ secrets.POSTMAN_API_KEY }}
